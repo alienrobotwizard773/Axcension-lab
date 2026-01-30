@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALIEN ROBOT WIZARD | HUD</title>
+    <style>
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-transform: uppercase;
+        }
+
+        #visualizer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .hud-container {
+            border: 2px solid #0f0;
+            padding: 20px;
+            background: rgba(0, 20, 0, 0.8);
+            box-shadow: 0 0 20px #0f0;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        h1 { font-size: 1.2rem; letter-spacing: 5px; margin-bottom: 20px; color: #fff; text-shadow: 0 0 10px #0f0; }
+
+        .track-list { list-style: none; padding: 0; margin-bottom: 20px; }
+        .track-item {
+            padding: 10px;
+            border: 1px solid #050;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.8rem;
+        }
+        .track-item:hover, .track-item.active {
+            background: #0f0;
+            color: #000;
+        }
+
+        .controls { margin-top: 10px; }
+        audio { width: 100%; filter: invert(1) hue-rotate(90deg); }
+        
+        .status { font-size: 0.6rem; color: #0f0; margin-top: 10px; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+<canvas id="visualizer"></canvas>
+
+<div class="hud-container">
+    <h1>SIGNAL_ACQUIRED</h1>
+    <ul class="track-list" id="playlist">
+        <li class="track-item" data-src="https://filedn.com/luVQpfvarUWjcTyJ5tTm0Gj/A%20SHAMANS%20GLOCK%20COMETH/album%20finalists/555ALIEN%20ROBOT%20DUBSTEP%20WIZARD.mp3">01. ALIEN ROBOT DUBSTEP WIZARD - E-SKREEZ-E</li>
+        <li class="track-item" data-src="https://filedn.com/luVQpfvarUWjcTyJ5tTm0Gj/A%20SHAMANS%20GLOCK%20COMETH/album%20finalists/33%20lives%20and%20a%20wake%20up.mp3">02. THE SLEEPERS (ENKI) - [GLOCK𖤐SHAMAN]</li>
+        <li class="track-item" data-src="https://filedn.com/luVQpfvarUWjcTyJ5tTm0Gj/A%20SHAMANS%20GLOCK%20COMETH/album%20finalists/887.mp3">03. THE SLEEPERS (ENLIL) - [GLOCK𖤐SHAMAN]</li>
+        <li class="track-item" data-src="https://filedn.com/luVQpfvarUWjcTyJ5tTm0Gj/A%20SHAMANS%20GLOCK%20COMETH/album%20finalists/777THE%20AXCENSION%2C%20EXIT%20PROTOCOL%2C%20FORCING%20THE%20ASCENSION.mp3">04. EXIT PROTOCOL - [GLOCK𖤐SHAMAN]</li>
+    </ul>
+
+    <audio id="audioPlayer" controls></audio>
+    <div class="status">SYSTEM STATUS: INFINIUM_MODE // SONIC_SHAMANIC</div>
+</div>
+
+<script>
+    const audio = document.getElementById('audioPlayer');
+    const canvas = document.getElementById('visualizer');
+    const ctx = canvas.getContext('2d');
+    const playlist = document.getElementById('playlist');
+    const tracks = document.querySelectorAll('.track-item');
+
+    let audioCtx, analyser, source, dataArray;
+
+    // Handle Window Resize
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+    canvas.width = window.innerWidth;
+    canvas
